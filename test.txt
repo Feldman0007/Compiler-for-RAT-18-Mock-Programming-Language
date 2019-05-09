@@ -1,12 +1,28 @@
-! You may put any Rat-18 code here, but here is a sample code snippet !
-! Find largest value between two numbers!
-1 100 17.0 .0 0. 0.0.
-int num1, num2, large$
-if(num1 > num2)
+!Find area of a circle!
+function areaofcircle$ [radius:float]
 {
-    large = num1$;
+	float pi = 3.14;
+	return(pi*(radius*radius));
+}
+
+function areawithdiameter[diameter:float]
+{
+	return(areaofcircle(diameter/2));
+}
+
+int choose$;	! Choose to use radius or diameter !
+choose$ = 0;
+float radius, diameter, area$;
+
+
+if(choose$ = 1)
+{
+	put(areaofcircle$(radius));
 }
 else
 {
-    large = num2$;
+	if(choose$ = 2)
+	{
+		put(areawithdiameter(diameter));
+     }
 }
