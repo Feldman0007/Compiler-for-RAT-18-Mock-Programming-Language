@@ -1,8 +1,9 @@
 #include "Lexer.h"
+#include "Parser.h"
 int main() { 
      Lexer lex;
-     if (lex.getSourceCode("test.txt")){
-          SymbolTable table;
+     if (lex.getSourceCode("test1assignmentOperator.txt")){
+          TokenTable table;
           Token t;
           while (true) {
                t = lex.nextToken();
@@ -13,7 +14,16 @@ int main() {
           }
           table.printTable();
           system("PAUSE");
-          table.writeTable();
+          //table.writeTable();
+          Parser parser(table);
+          if (parser.parseCode()) {
+               cout << "\nAccepted\n";
+          }
+          else
+          {
+               cout << "\nNot Accepted\n";
+          }
+          system("PAUSE");
           //table.addEntry(t);
      }
      return 0;    
