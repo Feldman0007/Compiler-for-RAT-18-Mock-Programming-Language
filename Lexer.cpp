@@ -17,7 +17,7 @@ bool Lexer::getSourceCode(string fileName) {
                }
                //if (character != '!') Missing a closing !
           }
-          else if (character == ' ' || character == '\n' || character == '\t') {
+          else if (character == ' ' || character == '\n' || character == '\t' || character == '\r') {
                if (temp.size() == 0)
                     continue;
                sourceCode.push_back(temp);
@@ -158,6 +158,7 @@ Token Lexer::nextToken() {
      return Token();
 }
 
+
 bool Lexer::isKeyword(string input) {
      for (int i = 0; i < NUM_KEYWORDS; i++) {
           if (input == KEYWORDS[i])
@@ -201,23 +202,39 @@ bool Lexer::isSeparator(char input) {
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
-void SymbolTable::addEntry(Token t) {
+Token TokenTable::nextToken() {
+     return entries[tableCursor];
+}
+
+void TokenTable::addEntry(Token t) {
      entries.push_back(t);
 }
 
-void SymbolTable::printTable() {
+int TokenTable::getCursor() {
+     return tableCursor;
+}
+
+void TokenTable::incCursor() {
+     tableCursor++;
+}
+
+int TokenTable::tableSize() {
+     return entries.size();
+}
+
+void TokenTable::printTable() {
      if (entries.empty()) {
           cout << "No entries\n";
           return;
      }
      cout << "    Token     |      Lexeme      |\n";
      cout << "----------------------------------\n";
-     for (list<Token>::iterator p = entries.begin(); p != entries.end(); p++) {
-          cout << left << "  " << setw(12) << p->tokenType << "|  " << setw(16) << p->lexeme << "|  " << endl;// << p->startingIndex << endl;
+	 for (int i = 0; i < entries.size(); i++) {
+          cout << left << "  " << setw(12) << entries[i].tokenType << "|  " << setw(16) << entries[i].lexeme << "|  " << endl;// << p->startingIndex << endl;
      }
 }
 
-void SymbolTable::writeTable() {
+void TokenTable::writeTable() {
      //file out handler
      ofstream fileHandler;
      fileHandler.open("output.txt");
@@ -234,8 +251,8 @@ void SymbolTable::writeTable() {
      }
      fileHandler << "    Token     |     Lexeme     |\n";
      fileHandler << "--------------------------------\n";
-     for (list<Token>::iterator p = entries.begin(); p != entries.end(); p++) {
-          fileHandler << left << "  " << setw(12) << p->tokenType << "|  " << setw(14) << p->lexeme << "|  " << endl;// << p->startingIndex << endl;
+     for (int i = 0; i < entries.size(); i++) {
+          fileHandler << left << "  " << setw(12) << entries[i].tokenType << "|  " << setw(14) << entries[i].lexeme << "|  " << endl;// << p->startingIndex << endl;
      }
      fileHandler.close();
 }
